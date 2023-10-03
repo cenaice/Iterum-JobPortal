@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+// core styles are required for all packages
+import "@mantine/core/styles.css";
+import { MantineProvider, createTheme } from "@mantine/core";
+import { Navbar } from "./components/Navbar";
+import { Hero } from "./pages/Hero";
+import { FeaturesCards } from "./components/FeaturesCards";
 
-function App() {
+const darkTheme = createTheme({
+  colorScheme: "dark",
+  // Customize other theme properties here
+});
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Job Portal Template
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Made with React
-        </a>
-      </header>
-    </div>
+    <MantineProvider
+      theme={{ colorScheme: "dark" }}
+      withGlobalStyles
+      withNormalizeCSS
+    >
+      <Navbar />
+      <div>
+        <Hero />
+        <FeaturesCards />
+      </div>
+    </MantineProvider>
   );
 }
-
-export default App;
