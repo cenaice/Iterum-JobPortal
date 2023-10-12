@@ -30,6 +30,7 @@ import {
   IconChevronDown,
 } from '@tabler/icons-react';
 import classes from './Navbar.module.css';
+import { signInWithGoogle } from '../firebase/firebase.js';
 
 const mockdata = [
   {
@@ -68,6 +69,17 @@ export function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
+  
+
+  const handleLogin = async () => {
+    console.log("Login Triggered");
+    try {
+      const user = await signInWithGoogle();
+      console.log("Logged in user:", user);
+    } catch (error) {
+      console.error("Failed to log in", error);
+    }
+  };
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -147,7 +159,7 @@ export function Navbar() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
+            <Button onClick={handleLogin} variant="default">Log in</Button>
             <Button>Sign up</Button>
           </Group>
 

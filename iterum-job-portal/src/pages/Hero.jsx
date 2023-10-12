@@ -31,7 +31,7 @@ export function Hero() {
               className={classes.control}
               mt={40}
             >
-              Get started
+              Get Started
             </Button>
           </div>
         </div>
