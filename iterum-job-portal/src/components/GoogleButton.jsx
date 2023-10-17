@@ -1,6 +1,12 @@
 import { Button, ButtonProps } from '@mantine/core';
 
+
+
 function GoogleIcon(props) {
+
+
+
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -30,5 +36,6 @@ function GoogleIcon(props) {
 }
 
 export function GoogleButton(props) {
+
   return <Button leftSection={<GoogleIcon />} variant="default" {...props} />;
 }

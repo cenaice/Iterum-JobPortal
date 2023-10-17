@@ -95,7 +95,12 @@ export function Navbar() {
       console.log("Logged in user:", currentUser);
       setCurrentUser(currentUser);
     } catch (error) {
-      console.error("Failed to log in", error);
+      if (error.code === "auth/popup-closed-by-user") {
+        console.log("Authentication popup was closed by the user.");
+        // Optionally inform the user with a UI message.
+      } else {
+        console.error("Failed to log in", error);
+      }
     }
   };
 
@@ -109,6 +114,13 @@ export function Navbar() {
       console.error("Failed to log out", error);
     }
   };
+
+  const handleUserChange = (user) => {
+    setCurrentUser(user);
+    closeModal();
+    console.log("Logged in user: ", user.displayName);
+    const currentUser = user.displayName;
+  }
 
   const openModal = () => setIsModalOpen(true); // Function to open modal
   const closeModal = () => setIsModalOpen(false); // Function to close modal 
@@ -258,7 +270,7 @@ export function Navbar() {
 
 
       <Modal opened={isModalOpen} onClose={closeModal} title="Sign Up">
-        <AuthenticationForm />
+        <AuthenticationForm closeModal={closeModal} onUserChange={handleUserChange} />
       </Modal>
     </Box >
   );
