@@ -17,6 +17,7 @@ import {
   rem,
   useMantineTheme,
   Image,
+  Modal,
 } from '@mantine/core';
 import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
@@ -31,6 +32,13 @@ import {
 } from '@tabler/icons-react';
 import classes from './Navbar.module.css';
 import { signInWithGoogle } from '../firebase/firebase.js';
+
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { initializeApp, getApps, getApp } from 'firebase/app';
+import { firebaseConfig } from '../firebase/firebase.js';
+import { useState } from "react";
+import { AuthenticationForm } from './SignUp';
+
 
 const mockdata = [
   {
@@ -69,17 +77,43 @@ export function Navbar() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
-  
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+
+
+  if (!getApps().length) {
+    initializeApp(firebaseConfig);
+  }
   const handleLogin = async () => {
     console.log("Login Triggered");
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
     try {
-      const user = await signInWithGoogle();
-      console.log("Logged in user:", user);
+      const userCredential = await signInWithPopup(auth, provider);
+      const currentUser = userCredential.user;
+      console.log("Logged in user:", currentUser);
+      setCurrentUser(currentUser);
     } catch (error) {
       console.error("Failed to log in", error);
     }
   };
+
+
+  const handleLogout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      setCurrentUser(null);
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
+  };
+
+  const openModal = () => setIsModalOpen(true); // Function to open modal
+  const closeModal = () => setIsModalOpen(false); // Function to close modal 
+
+
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -159,8 +193,20 @@ export function Navbar() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button onClick={handleLogin} variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            {currentUser ? (
+              <Group>
+
+                <Image src={currentUser.photoURL} alt={currentUser.displayName} style={{ width: '40px', borderRadius: '50%' }} />
+                <Text>{currentUser.displayName}</Text>
+                <Button onClick={handleLogout}>Logout</Button>
+
+              </Group>
+            ) : (
+              <Group>
+                <Button onClick={handleLogin} variant="default">Log in</Button>
+                <Button onClick={openModal}>Sign up</Button>
+              </Group>
+            )}
           </Group>
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -209,6 +255,11 @@ export function Navbar() {
           </Group>
         </ScrollArea>
       </Drawer>
-    </Box>
+
+
+      <Modal opened={isModalOpen} onClose={closeModal} title="Sign Up">
+        <AuthenticationForm />
+      </Modal>
+    </Box >
   );
 }

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // import { getDatabase } from "firebase/database";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -17,7 +18,7 @@ const firebaseConfig = {
   storageBucket: "techjobportal-d94c3.appspot.com",
   messagingSenderId: "846952886028",
   appId: "1:846952886028:web:701a63fc2051460330e329",
-  measurementId: "G-SFQ1LNRSCB" 
+  measurementId: "G-SFQ1LNRSCB"
 };
 
 // Initialize Firebase
@@ -46,5 +47,5 @@ const signInWithGoogle = async () => {
   }
 };
 
-export { auth, provider, app, analytics, signInWithGoogle };
+export { firebaseConfig, auth, provider, app, analytics, signInWithGoogle };
 
