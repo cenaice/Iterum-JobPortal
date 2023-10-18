@@ -6,7 +6,6 @@ import {
   Text,
   Paper,
   Group,
-  PaperProps,
   Button,
   Divider,
   Checkbox,
@@ -18,8 +17,7 @@ import { TwitterButton } from './TwitterButton';
 import { auth, signInWithGoogle } from '../firebase/firebase.js'; // update the path accordingly
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { firebaseConfig } from '../firebase/firebase.js';
+import { initializeApp } from 'firebase/app';
 
 
 export function AuthenticationForm({ closeModal, onUserChange, ...props }) {

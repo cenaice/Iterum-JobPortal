@@ -18,6 +18,7 @@ import {
   useMantineTheme,
   Image,
   Modal,
+  Popover,
 } from '@mantine/core';
 import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
@@ -32,7 +33,7 @@ import {
 } from '@tabler/icons-react';
 import classes from './Navbar.module.css';
 import { signInWithGoogle } from '../firebase/firebase.js';
-
+import { UserCardImage } from './UserCard.jsx';
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { firebaseConfig } from '../firebase/firebase.js';
@@ -79,7 +80,7 @@ export function Navbar() {
   const theme = useMantineTheme();
   const [currentUser, setCurrentUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [visibleUserCard, setVisibleUserCard] = useState(false);
 
 
   if (!getApps().length) {
@@ -121,6 +122,12 @@ export function Navbar() {
     console.log("Logged in user: ", user.displayName);
     const currentUser = user.displayName;
   }
+
+  const onImageClick = async => {
+    setVisibleUserCard(!visibleUserCard); 
+    };
+
+
 
   const openModal = () => setIsModalOpen(true); // Function to open modal
   const closeModal = () => setIsModalOpen(false); // Function to close modal 
@@ -204,23 +211,34 @@ export function Navbar() {
             </a>
           </Group>
 
-          <Group visibleFrom="sm">
-            {currentUser ? (
-              <Group>
 
-                <Image src={currentUser.photoURL} alt={currentUser.displayName} style={{ width: '40px', borderRadius: '50%' }} />
-                <Text>{currentUser.displayName}</Text>
-                <Button onClick={handleLogout}>Logout</Button>
+  <Group visibleFrom="sm">
+  {currentUser ? (
+    <Group>
+      <Popover width={300} position="bottom" withArrow shadow="md">
+        <Popover.Target>
+          <Image 
+            src={currentUser.photoURL} 
+            alt={currentUser.displayName} 
+            style={{ width: '40px', borderRadius: '50%' }}
+          />
+        </Popover.Target>
 
-              </Group>
-            ) : (
-              <Group>
-                <Button onClick={handleLogin} variant="default">Log in</Button>
-                <Button onClick={openModal}>Sign up</Button>
-              </Group>
-            )}
-          </Group>
+        <Popover.Dropdown>
+          <UserCardImage userData={currentUser} />
+        </Popover.Dropdown>
+      </Popover>
 
+      <Text>{currentUser.displayName}</Text>
+      <Button onClick={handleLogout}>Logout</Button>
+    </Group>
+  ) : (
+    <Group>
+      <Button onClick={handleLogin} variant="default">Log in</Button>
+      <Button onClick={openModal}>Sign up</Button>
+    </Group>
+  )}
+      </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>
