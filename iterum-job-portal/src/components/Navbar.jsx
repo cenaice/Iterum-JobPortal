@@ -39,6 +39,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app';
 import { firebaseConfig } from '../firebase/firebase.js';
 import { useState } from "react";
 import { AuthenticationForm } from './SignUp';
+import { Link } from 'react-router-dom';
 
 
 const mockdata = [
@@ -120,12 +121,11 @@ export function Navbar() {
     setCurrentUser(user);
     closeModal();
     console.log("Logged in user: ", user.displayName);
-    const currentUser = user.displayName;
   }
 
   const onImageClick = async => {
-    setVisibleUserCard(!visibleUserCard); 
-    };
+    setVisibleUserCard(!visibleUserCard);
+  };
 
 
 
@@ -159,10 +159,9 @@ export function Navbar() {
           <MantineLogo size={30} />
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="#" className={classes.link}>
+            <Link to="/" className={classes.link}>
               Home
-            </a>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+            </Link>            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <a href="#" className={classes.link}>
                   <Center inline>
@@ -212,33 +211,33 @@ export function Navbar() {
           </Group>
 
 
-  <Group visibleFrom="sm">
-  {currentUser ? (
-    <Group>
-      <Popover width={300} position="bottom" withArrow shadow="md">
-        <Popover.Target>
-          <Image 
-            src={currentUser.photoURL} 
-            alt={currentUser.displayName} 
-            style={{ width: '40px', borderRadius: '50%' }}
-          />
-        </Popover.Target>
+          <Group visibleFrom="sm">
+            {currentUser ? (
+              <Group>
+                <Popover width={300} position="bottom" withArrow shadow="md">
+                  <Popover.Target>
+                    <Image
+                      src={currentUser.photoURL}
+                      alt={currentUser.displayName}
+                      style={{ width: '40px', borderRadius: '50%' }}
+                    />
+                  </Popover.Target>
 
-        <Popover.Dropdown>
-          <UserCardImage userData={currentUser} />
-        </Popover.Dropdown>
-      </Popover>
+                  <Popover.Dropdown>
+                    <UserCardImage userData={currentUser} />
+                  </Popover.Dropdown>
+                </Popover>
 
-      <Text>{currentUser.displayName}</Text>
-      <Button onClick={handleLogout}>Logout</Button>
-    </Group>
-  ) : (
-    <Group>
-      <Button onClick={handleLogin} variant="default">Log in</Button>
-      <Button onClick={openModal}>Sign up</Button>
-    </Group>
-  )}
-      </Group>
+                <Text>{currentUser.displayName}</Text>
+                <Button onClick={handleLogout}>Logout</Button>
+              </Group>
+            ) : (
+              <Group>
+                <Button onClick={handleLogin} variant="default">Log in</Button>
+                <Button onClick={openModal}>Sign up</Button>
+              </Group>
+            )}
+          </Group>
           <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
         </Group>
       </header>

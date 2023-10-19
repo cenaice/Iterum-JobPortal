@@ -1,7 +1,15 @@
+
 import { Container, Title, Text, Button } from "@mantine/core";
 import classes from "./Hero.module.css";
+import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 
 export function Hero() {
+  const navigate = useNavigate(); // Get the navigate function
+
+  const handleGetStartedClick = () => {
+    navigate("/jobportal"); // Redirect to the desired path
+  };
+
   return (
     <div className={classes.root}>
       <Container size="lg">
@@ -30,6 +38,7 @@ export function Hero() {
               size="xl"
               className={classes.control}
               mt={40}
+              onClick={handleGetStartedClick} // Attach the onClick handler
             >
               Get Started
             </Button>
@@ -39,3 +48,4 @@ export function Hero() {
     </div>
   );
 }
+
