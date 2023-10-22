@@ -1,6 +1,7 @@
 import { Card, Avatar, Text, Group, Button } from '@mantine/core';
 import classes from './UserCard.module.css';
 import { getAuth } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const stats = [
   { value: '0', label: 'Jobs Applied' },
@@ -8,7 +9,7 @@ const stats = [
 ];
 
 export function UserCardImage() {
-  
+
   const auth = getAuth();
   const user = auth.currentUser;
   // The user object has basic properties such as    display name, email, etc.
@@ -16,7 +17,12 @@ export function UserCardImage() {
   const email = user.email;
   const photoURL = user.photoURL;
   const emailVerified = user.emailVerified;
-  
+  const navigate = useNavigate();
+
+
+  const handleProfilePageClick = () => {
+    navigate("/profilepage");
+  };
 
 
 
@@ -57,7 +63,8 @@ export function UserCardImage() {
       <Group mt="md" justify="center" gap={30}>
         {items}
       </Group>
-      <Button fullWidth radius="md" mt="xl" size="md" variant="default">
+      <Button fullWidth radius="md" mt="xl" size="md" variant="default" onClick={handleProfilePageClick}>
+
         Profile
       </Button>
     </Card>

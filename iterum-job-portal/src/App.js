@@ -1,21 +1,16 @@
-
-import "./App.css";
 import "@mantine/core/styles.css";
-import { MantineProvider, createTheme } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./pages/Hero";
 import { FeaturesCards } from "./components/FeaturesCards";
 import { JobPortal } from "./pages/JobPortal";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Import necessary routing components
-
-const darkTheme = createTheme({
-  colorScheme: "dark",
-  // Customize other theme properties here
-});
+import { ProfilePage } from "./pages/ProfilePage";
+import { About } from "./pages/About";
 
 export default function App() {
   return (
-    <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles withNormalizeCSS>
+    <MantineProvider defaultColorScheme="light">
       <Router>
         <Navbar />
         <div>
@@ -23,6 +18,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<><Hero /><FeaturesCards /></>} />
             <Route path="/jobportal" element={<JobPortal />} />
+            <Route path="/profilepage" element={<ProfilePage />} />
+            <Route path="/aboutpage" element={<About />} />
           </Routes>
         </div>
       </Router>

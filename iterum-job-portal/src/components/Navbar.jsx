@@ -40,7 +40,7 @@ import { firebaseConfig } from '../firebase/firebase.js';
 import { useState } from "react";
 import { AuthenticationForm } from './SignUp';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const mockdata = [
   {
@@ -82,6 +82,13 @@ export function Navbar() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visibleUserCard, setVisibleUserCard] = useState(false);
+
+  // Navbar Navigation
+
+  const navigate = useNavigate();
+  const handleAboutNavigation = () => {
+    navigate('/aboutpage');
+  };
 
 
   if (!getApps().length) {
@@ -205,7 +212,7 @@ export function Navbar() {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <a href="#" className={classes.link}>
+            <a href="#" className={classes.link} onClick={handleAboutNavigation}>
               About Us
             </a>
           </Group>
