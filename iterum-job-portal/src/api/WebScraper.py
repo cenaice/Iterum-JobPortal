@@ -1,9 +1,20 @@
-from bs4 import BeautifulSoup
+import firebase_admin
+from firebase_admin import credentials, db
 import requests
-
+from bs4 import BeautifulSoup
 
 # Getting Response from our URLs
 URL_ReaV = "http://www.github.com/ReaVNaiL/New-Grad-2024"
+
+
+# Connecting Firebase Database to our Python Project
+cred = credentials.Certificate('/home/victer/Documents/GIT/Iterum-JobPortal/serviceAccountKey.json')
+
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://techjobportal-d94c3-default-rtdb.firebaseio.com/'
+})
+
+ref = db.reference('JobPostings')
 
 
 # try and catch response
@@ -37,10 +48,15 @@ try:
             }
             jobs.append(job_data)
 
-    for job in jobs:
-        print(job)
+    for i, job in enumerate(jobs):
+        # Sanitize the company name to ensure it's a valid Firebase key
+        company_key = job['company_name'].replace('.', '').replace('$', '').replace('[', '').replace(']', '').replace('#', '').replace('/', '').replace('\u0000', '').replace('\u001F', '')
 
-    
+        # Append the timestamp to the sanitized company name
+        unique_key = f"{i}_{company_key}"
+
+        # Use unique key as key for job entry into database
+        ref.child(unique_key).set(job) 
 
 except requests.exceptions.HTTPError as errh:
     print(f'HTTP Error: {errh}')
