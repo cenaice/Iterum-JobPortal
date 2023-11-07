@@ -3,60 +3,66 @@ import classes from './JobTable.module.css';
 
 const data = [
   {
-    title: 'Foundation',
-    author: 'Isaac Asimov',
-    year: 1951,
-    reviews: { positive: 2223, negative: 259 },
+    apply_link: 'Foundation',
+    company_name: 'Palantir',
+    date_posted: 1951,
+    location: { positive: 2223, negative: 259 },
+    role: "Morning Star Development Program",
   },
   {
-    title: 'Frankenstein',
-    author: 'Mary Shelley',
-    year: 1818,
-    reviews: { positive: 5677, negative: 1265 },
+    apply_link: 'Frankenstein',
+    company_name: 'Mary Shelley',
+    date_posted: 1818,
+    location: { positive: 5677, negative: 1265 },
+    role: "Lorem Ipsum Co."
   },
   {
-    title: 'Solaris',
-    author: 'Stanislaw Lem',
-    year: 1961,
-    reviews: { positive: 3487, negative: 1845 },
+    apply_link: 'Solaris',
+    company_name: 'Stanislaw Lem',
+    date_posted: 1961,
+    location: { positive: 3487, negative: 1845 },
+    role: "Lorem Ipsum University"
   },
   {
-    title: 'Dune',
-    author: 'Frank Herbert',
-    year: 1965,
-    reviews: { positive: 8576, negative: 663 },
+    apply_link: 'Dune',
+    company_name: 'Frank Herbert',
+    date_posted: 1965,
+    location: { positive: 8576, negative: 663 },
+    role: "Lorem Ipsum Store"
   },
   {
-    title: 'The Left Hand of Darkness',
-    author: 'Ursula K. Le Guin',
-    year: 1969,
-    reviews: { positive: 6631, negative: 993 },
+    apply_link: 'The Left Hand of Darkness',
+    company_name: 'Ursula K. Le Guin',
+    date_posted: 1969,
+    location: { positive: 6631, negative: 993 },
+    role: "Lorem Ipsum Solar"
   },
   {
-    title: 'A Scanner Darkly',
-    author: 'Philip K Dick',
-    year: 1977,
-    reviews: { positive: 8124, negative: 1847 },
+    apply_link: 'A Scanner Darkly',
+    company_name: 'Philip K Dick',
+    date_posted: 1977,
+    location: { positive: 8124, negative: 1847 },
+    role: "Lorem Ipsum Ipsum Lorem"
   },
 ];
 
 export function JobTable() {
   const rows = data.map((row) => {
-    const totalReviews = row.reviews.negative + row.reviews.positive;
-    const positiveReviews = (row.reviews.positive / totalReviews) * 100;
-    const negativeReviews = (row.reviews.negative / totalReviews) * 100;
+    const totalReviews = row.location.negative + row.location.positive;
+    const positiveReviews = (row.location.positive / totalReviews) * 100;
+    const negativeReviews = (row.location.negative / totalReviews) * 100;
 
     return (
-      <Table.Tr key={row.title}>
+      <Table.Tr key={row.company_name}>
         <Table.Td>
           <Anchor component="button" fz="sm">
-            {row.title}
+            {row.company_name}
           </Anchor>
         </Table.Td>
-        <Table.Td>{row.year}</Table.Td>
+        <Table.Td>{row.date_posted}</Table.Td>
         <Table.Td>
           <Anchor component="button" fz="sm">
-            {row.author}
+            {row.date_posted}
           </Anchor>
         </Table.Td>
         <Table.Td>{Intl.NumberFormat().format(totalReviews)}</Table.Td>

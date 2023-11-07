@@ -1,9 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-// import { getDatabase } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { wait } from "@testing-library/user-event/dist/utils";
+
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -47,5 +49,10 @@ const signInWithGoogle = async () => {
   }
 };
 
-export { firebaseConfig, auth, provider, app, analytics, signInWithGoogle };
+// Handle Database Reading
+export const database = getDatabase(app);
+
+
+// Export
+export { firebaseConfig, auth, provider, app, analytics, signInWithGoogle};
 
