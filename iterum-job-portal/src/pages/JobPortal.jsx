@@ -3,19 +3,22 @@ import { JobTable } from "../components/JobPortalComponents/JobTable";
 import { SearchBar } from '../components/JobPortalComponents/SearchBar';
 import { PositionFilter } from "../components/JobPortalComponents/PositionFilter";
 import { IconNumber10Small } from "@tabler/icons-react";
-
+import { useState } from 'react';
 
 export function JobPortal() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+
   return (
     <div>
       <Container size="lg">
         <h1>Search Now</h1>
-        <SearchBar pb={10} />
+        <SearchBar pb={10} onSearch={(query) => setSearchQuery(query)} />
         <Box pb={20}>
           <Center pb={20}>
             <PositionFilter />
           </Center>
-          <JobTable />
+          <JobTable searchQuery={searchQuery} />
         </Box>
         <Center>
 

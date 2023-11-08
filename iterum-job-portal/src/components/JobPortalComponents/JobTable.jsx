@@ -1,4 +1,4 @@
-import { Table, Progress, Anchor, Text, Group } from '@mantine/core';
+import { Table, Progress, Anchor, Text, Group, Button } from '@mantine/core';
 import classes from './JobTable.module.css';
 import React, { useState, useEffect } from 'react';
 import { database } from '../../firebase/firebase.js';
@@ -6,26 +6,43 @@ import { ref, onValue } from "firebase/database"
 
 const data = [];
 
-export function JobTable() {
+export function JobTable({ searchQuery }) {
 
   const [data, setData] = useState([]);
-
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const databaseRef = ref(database, 'JobPostings');
     onValue(databaseRef, (snapshot) => {
-      const dbData = snapshot.val();
-      const dataArray = Object.keys(dbData).map((key) => dbData[key]);
+      const dbData = snapshot.val() || {};
+      const dataArray = Object.keys(dbData).map((key) => ({
+        ...dbData[key],
+        id: key // Save the key as part of the object for React key purposes
+      }));
       setData(dataArray);
+      setFilteredData(dataArray); // Initialize filteredData with all data initially
     });
   }, []);
 
 
+useEffect(() => {
+    if (searchQuery) {
+      const searchLowerCase = searchQuery.toLowerCase();
+      const filtered = data.filter((item) => 
+        item.company_name.toLowerCase().includes(searchLowerCase) ||
+        item.role.toLowerCase().includes(searchLowerCase) ||
+        item.location.toLowerCase().includes(searchLowerCase)
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(data); // If searchQuery is empty, show all data
+    }
+  }, [searchQuery, data]); // This effect runs when searchQuery or data changes
 
 
-  const rows = data.map((row) => {
+  const rows = filteredData.map((row) => {
     return (
-      <Table.Tr key={row.company_name}>
+      <Table.Tr key={row.id}>
         <Table.Td>
           <Anchor component="button" fz="sm">
             {row.company_name}
@@ -39,7 +56,7 @@ export function JobTable() {
         </Table.Td>
         <Table.Td>{row.location}</Table.Td>
         <Table.Td>
-          Button
+          <Button>Link</Button>
         </Table.Td>
       </Table.Tr>
     );
