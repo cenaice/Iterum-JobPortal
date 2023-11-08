@@ -35,7 +35,7 @@
 
 .title {
   color: var(--mantine-color-white);
-  font-family: Greycliff CF, sans-serif;
+  font-family: greycliff-cf, sans-serif;
   font-weight: 900;
   line-height: 1.05;
   max-width: 500px; /* Assuming you want to set max-width to 500px */
@@ -61,7 +61,7 @@
 .control {
   padding-left: 50px;
   padding-right: 50px;
-  font-family: Greycliff CF, var(--mantine-font-family);
+  font-family: greycliff-cf, sans-serif;
   font-size: 22px;
 
 

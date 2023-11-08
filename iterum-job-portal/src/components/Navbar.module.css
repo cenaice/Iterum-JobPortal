@@ -49,22 +49,22 @@
   }
   
   .title {
-    font-family: Greycliff CF, var(--mantine-font-family);
+    font-family: greycliff-cf, sans-serif;
     margin-bottom: var(--mantine-spacing-xl);
     background-color: var(--mantine-color-body);
     padding: var(--mantine-spacing-md);
-    padding-top: rem(18px);
-    height: rem(60px);
-    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
+    padding-top: 18px;
+    height: 60px;
+    border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
   }
   
   .logo {
     width: 100%;
     display: flex;
     justify-content: center;
-    height: rem(60px);
+    height: 60px;
     padding-top: var(--mantine-spacing-md);
-    border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
+    border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
     margin-bottom: var(--mantine-spacing-xl);
   }
   
@@ -73,7 +73,7 @@
     text-decoration: none;
     border-top-right-radius: var(--mantine-radius-md);
     border-bottom-right-rad.header {
-        height: rem(60px);
+        height: 60px;
         padding-left: var(--mantine-spacing-md);
         padding-right: var(--mantine-spacing-md);
         border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
@@ -91,7 +91,7 @@
         font-size: var(--mantine-font-size-sm);
       
         @media (max-width: $mantine-breakpoint-sm) {
-          height: rem(42px);
+          height: 42px;
           width: 100%;
         }
       
@@ -123,8 +123,8 @@
     font-size: var(--mantine-font-size-sm);
     margin-right: var(--mantine-spacing-md);
     font-weight: 500;
-    height: rem(44px);
-    line-height: rem(44px);
+    height: 44px;
+    line-height: 44px;
   
     &:hover {
       background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));

@@ -1,5 +1,5 @@
 import "@mantine/core/styles.css";
-import { MantineProvider } from "@mantine/core";
+import { Button, Code, Title, MantineProvider } from "@mantine/core";
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./pages/Hero";
 import { FeaturesCards } from "./components/FeaturesCards";
@@ -12,11 +12,11 @@ export default function App() {
   return (
     <>
       <MantineProvider
-        theme={{
-          fontFamily: 'Verdana, sans-serif',
-          fontFamilyMonospace: 'Monaco, Courier, monospace',
-          headings: { fontFamily: 'Greycliff CF, sans-serif' },
-        }}
+      theme={{
+        fontFamily: 'Verdana, sans-serif',
+        fontFamilyMonospace: 'Monaco, Courier, monospace',
+        headings: { fontFamily: 'Greycliff CF, sans-serif' },
+      }}
       >
         <Router>
           <Navbar />
@@ -27,6 +27,7 @@ export default function App() {
             <Route path="/aboutpage" element={<About />} />
           </Routes>
         </Router>
+
       </MantineProvider>
     </>
   );
