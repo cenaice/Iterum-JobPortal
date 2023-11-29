@@ -94,25 +94,6 @@ export function Navbar() {
   if (!getApps().length) {
     initializeApp(firebaseConfig);
   }
-  const handleLogin = async () => {
-    console.log("Login Triggered");
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-      const currentUser = userCredential.user;
-      console.log("Logged in user:", currentUser);
-      setCurrentUser(currentUser);
-    } catch (error) {
-      if (error.code === "auth/popup-closed-by-user") {
-        console.log("Authentication popup was closed by the user.");
-        // Optionally inform the user with a UI message.
-      } else {
-        console.error("Failed to log in", error);
-      }
-    }
-  };
-
 
   const handleLogout = async () => {
     const auth = getAuth();
@@ -240,7 +221,7 @@ export function Navbar() {
               </Group>
             ) : (
               <Group>
-                <Button onClick={handleLogin} variant="default">Log in</Button>
+                <Button onClick={openModal} variant="default">Log in</Button>
                 <Button onClick={openModal}>Sign up</Button>
               </Group>
             )}
@@ -294,7 +275,7 @@ export function Navbar() {
 
 
       <Modal opened={isModalOpen} onClose={closeModal} title="Sign Up">
-        <AuthenticationForm closeModal={closeModal} onUserChange={handleUserChange} />
+        <AuthenticationForm setCurrentUser={setCurrentUser} closeModal={closeModal} onUserChange={handleUserChange} />
       </Modal>
     </Box >
   );

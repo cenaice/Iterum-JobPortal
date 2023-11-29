@@ -14,13 +14,10 @@ import {
 } from '@mantine/core';
 import { GoogleButton } from './GoogleButton';
 import { TwitterButton } from './TwitterButton';
-import { auth, signInWithGoogle } from '../firebase/firebase.js'; // update the path accordingly
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from 'firebase/auth';
+import { useEffect } from 'react';
 
-
-export function AuthenticationForm({ closeModal, onUserChange, ...props }) {
+export function AuthenticationForm({ setCurrentUser, closeModal, onUserChange, ...props }) {
   const [type, toggle] = useToggle(['login', 'register']);
   const form = useForm({
     initialValues: {
@@ -35,9 +32,22 @@ export function AuthenticationForm({ closeModal, onUserChange, ...props }) {
       password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
     },
   });
-
-
-
+  const auth = getAuth();
+  // Redirect result handling
+  useEffect(() => {
+    const auth = getAuth();
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          const user = result.user;
+          setCurrentUser(user); // Update the user state
+          closeModal();
+        }
+      })
+      .catch((error) => {
+        console.error("Error handling redirect result:", error);
+      });
+  }, [setCurrentUser, closeModal]);
 
   const handleAuth = async () => {
     try {
@@ -45,43 +55,39 @@ export function AuthenticationForm({ closeModal, onUserChange, ...props }) {
         await createUserWithEmailAndPassword(auth, form.values.email, form.values.password);
 
         const user = getAuth().currentUser;
-
         if (user) {
           await updateProfile(user, {
             displayName: form.values.name
           });
+          onUserChange(user);
+          closeModal();
         } else {
           console.error("No authenticated user found.");
         }
       } else {
         await signInWithEmailAndPassword(auth, form.values.email, form.values.password);
+        const user = getAuth().currentUser;
+        onUserChange(user);
+        closeModal();
       }
-
-      const user = getAuth().currentUser;
-      onUserChange(user);
-      closeModal();
     } catch (error) {
       console.error("Authentication Error:", error.message);
     }
+    const user = getAuth().currentUser;
+    setCurrentUser(user); // Update the user state
+    closeModal();
   };
-
-
 
   const handleGoogleSignIn = async () => {
+    console.log("Google Sign In Triggered");
+    const auth = getAuth();
     const provider = new GoogleAuthProvider();
-
     try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      onUserChange(user);  // This will ensure that the displayName is sent back to your Navbar or wherever you want to display it
-      closeModal();
+      await signInWithRedirect(auth, provider);
     } catch (error) {
-      console.error("Google Sign-In Error:", error.message);
+      console.error("Failed to log in with Google", error);
     }
   };
-
-
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
