@@ -12,7 +12,7 @@ file_path = '../../../datasets/dice_com-job_us_sample.csv'
 data = pd.read_csv(file_path)
 
 # Randomly sample a subset of the data (10% in this case)
-sampled_data = data.sample(frac=0.5, random_state=1)
+sampled_data = data.sample(frac=1, random_state=1)
 
 # Remove duplicates
 sampled_data.drop_duplicates(inplace=True)
@@ -34,9 +34,49 @@ def is_front_end_developer(title, description):
             return 1 # Front-End
     return 0
 
+def is_back_end_developer(title, description):
+    keywords = [
+    "Java", "Python", "C#", "PHP", "Ruby", "Node.js", "Go", "Scala", "Kotlin",
+    "Spring", "Django", "Flask", "Express.js", ".NET", "Laravel", "Ruby on Rails",
+    "MySQL", "PostgreSQL", "MongoDB", "Oracle", "SQL Server", "Redis", "Cassandra",
+    "Apache", "Nginx", "Microsoft IIS",
+    "Docker", "Kubernetes", "AWS", "Azure", "Google Cloud Platform",
+    "Git", "SVN",
+    "RESTful Services", "GraphQL",
+    "JUnit", "PyTest", "Mocha",
+    "Microservices Architecture", "MVC Architecture", "Message Brokers", "RabbitMQ", "Kafka",
+    "OAuth", "JWT", "SSL/TLS"
+]
+    for keyword in keywords:
+        if keyword in title.lower() or keyword in description.lower():
+            return 1
+    return 0
 
-
-
+def is_ai_ml(title, description):
+    keywords = [
+    "Machine Learning", "Deep Learning", "Artificial Intelligence", "Neural Networks",
+    "Python", "R", "TensorFlow", "Keras", "PyTorch", "Scikit-learn",
+    "NLP", "Natural Language Processing", "Computer Vision",
+    "Reinforcement Learning", "Supervised Learning", "Unsupervised Learning",
+    "Classification", "Regression", "Clustering", "Dimensionality Reduction",
+    "Feature Engineering", "Model Selection", "Hyperparameter Tuning",
+    "Data Mining", "Data Analysis", "Big Data",
+    "Pandas", "NumPy", "Matplotlib", "Seaborn", "Jupyter",
+    "CUDA", "GPU Computing",
+    "Time Series Analysis", "Anomaly Detection",
+    "Statistics", "Probability",
+    "SQL", "NoSQL", "Data Warehousing",
+    "Spark", "Hadoop",
+    "AWS", "Azure", "Google Cloud Platform",
+    "API Development", "Microservices",
+    "Git", "Docker", "Kubernetes",
+    "A/B Testing", "Experimentation",
+    "Model Deployment", "MLOps", "AI Ethics"
+]
+    for keyword in keywords:
+        if keyword in title.lower() or keyword in description.lower():
+            return 1
+    return 0
 
 
 
@@ -67,7 +107,7 @@ X = sampled_data['combined_text']
 y = sampled_data['is_front_end_dev']  # Replace 'category' with the actual column name
 
 # Split the data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.8, random_state=1)
 
 # Create a pipeline that transforms the data using TF-IDF and then fits the Naive Bayes classifier
 model = make_pipeline(TfidfVectorizer(), MultinomialNB())

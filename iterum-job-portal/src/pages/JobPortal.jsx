@@ -2,6 +2,7 @@ import { Container, Title, Text, Button, Center, Anchor, Box, rem, } from "@mant
 import { JobTable } from "../components/JobPortalComponents/JobTable";
 import { SearchBar } from '../components/JobPortalComponents/SearchBar';
 import { PositionFilter } from "../components/JobPortalComponents/PositionFilter";
+import { HeroSearchBar } from "../components/JobPortalComponents/HeroSearchBar";
 import { IconNumber10Small } from "@tabler/icons-react";
 import { useState } from 'react';
 
@@ -10,8 +11,10 @@ export function JobPortal() {
 
 
   return (
-    <div>
+    <Container >
+    <HeroSearchBar/>
       <Container size="lg">
+      
         <h1>Search Now</h1>
         <SearchBar pb={10} onSearch={(query) => setSearchQuery(query)} />
         <Box pb={20}>
@@ -25,6 +28,6 @@ export function JobPortal() {
           <a href='https://www.glassdoor.com/index.htm'>powered by <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png' title='Job Search' /></a>
         </Center>
       </Container>
-    </div>
+    </Container>
   );
 }
