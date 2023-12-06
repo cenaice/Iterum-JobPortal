@@ -89,9 +89,11 @@ front_end_model, vectorizer_fe, X_test_fe, y_test_fe = training_model(
 # ai_ml_model, X_test_ai, y_test_ai = training_model(sampled_data['combined_text'], sampled_data['is_ai_ml'], "AI ML")
 
 # Biased Language Detection
+
 sampled_data['biased_words'] = sampled_data['jobdescription'].apply(
-    lambda x: JobCategoryClassifier.find_biased_language(x, JobCategoryClassifier.biased_words))
+    lambda x: JobCategoryClassifier.find_biased_language(x))
 
 # Display job descriptions with biased words
-biased_job_descriptions = sampled_data[sampled_data['biased_words'].apply(lambda x: len(x) > 0)]
+biased_job_descriptions = sampled_data[sampled_data['biased_words'].apply(
+    lambda x: len(x) > 0)]
 print(biased_job_descriptions[['jobtitle', 'jobdescription', 'biased_words']])
