@@ -3,21 +3,22 @@
 
 class JobCategoryClassifier:
     biased_words = {
-    "aggressive", "ambitious", "assertive", "competitive", "confident",
-    "courageous", "decisive", "dominant", "driven", "fearless",
-    "headstrong", "hierarchical", "lead", "logic", "objective",
-    "outspoken", "persist", "principle", "risk", "self-reliant",
-    "self-sufficient", "strong", "affectionate", "collaborate",
-    "compassionate", "cooperative", "dependable", "empathetic",
-    "interpersonal", "loyal", "nurture", "pleasant", "polite",
-    "quiet", "responsive", "sensitive", "supportive", "sympathetic",
-    "trust", "understand", "warm", "yield", "young", "youthful",
-    "new graduate", "old", "elderly", "seasoned", "experienced",
-    "overqualified", "energetic", "dynamic", "able-bodied", "walk-in",
-    "agile", "strong", "robust", "stamina", "rockstar", "ninja",
-    "superhero", "guru", "wizard", "chairman", "foreman", "maid",
-    "housewife", "waitress", "native", "urban", "suburban", "tribe",
-    "culture fit", "digital native", "articulate", "exotic", "articulate", "male", "female"}
+        "aggressive", "ambitious", "assertive", "competitive", "confident", "passionate", "nice", "experienced", "preferred", 'prefer', 'advised', 'required',
+        "courageous", "decisive", "dominant", "driven", "fearless",
+        "headstrong", "hierarchical", "lead", "logic", "objective",
+        "outspoken", "persist", "principle", "risk", "self-reliant",
+        "self-sufficient", "strong", "affectionate", "collaborate",
+        "compassionate", "cooperative", "dependable", "empathetic",
+        "interpersonal", "loyal", "nurture", "pleasant", "polite",
+        "quiet", "responsive", "sensitive", "supportive", "sympathetic",
+        "trust", "understand", "warm", "yield", "young", "youthful",
+        "new graduate", "old", "elderly", "seasoned", "experienced",
+        "overqualified", "energetic", "dynamic", "able-bodied", "walk-in",
+        "agile", "strong", "robust", "stamina", "rockstar", "ninja",
+        "superhero", "guru", "wizard", "chairman", "foreman", "maid",
+        "housewife", "waitress", "native", "urban", "suburban", "tribe", 'fit',
+        "culture", "digital native", "articulate", "exotic", "articulate", 'aggressive', 'fearless', 'superior', 'driven', 'determined', 'decider', 'considerate', 'nurture', 'empathetic', 'responsive', 'trustworthy', 'inclusive'
+    }
 
     def __init__(self):
         pass
@@ -63,9 +64,9 @@ class JobCategoryClassifier:
         return any(keyword in title.lower() or keyword in description.lower() for keyword in keywords)
 
     @staticmethod
-    def find_biased_language(text):
+    def find_biased_language(text, num):
         biased_words = {
-            "aggressive", "ambitious", "assertive", "competitive", "confident",
+            "aggressive", "ambitious", "assertive", "competitive", "confident", "passionate", "nice", "experienced", "preferred", 'prefer', 'advised', 'required',
             "courageous", "decisive", "dominant", "driven", "fearless",
             "headstrong", "hierarchical", "lead", "logic", "objective",
             "outspoken", "persist", "principle", "risk", "self-reliant",
@@ -78,11 +79,21 @@ class JobCategoryClassifier:
             "overqualified", "energetic", "dynamic", "able-bodied", "walk-in",
             "agile", "strong", "robust", "stamina", "rockstar", "ninja",
             "superhero", "guru", "wizard", "chairman", "foreman", "maid",
-            "housewife", "waitress", "native", "urban", "suburban", "tribe",
-            "culture fit", "digital native", "articulate", "exotic", "articulate", "male", "female"
+            "housewife", "waitress", "native", "urban", "suburban", "tribe", 'fit',
+            "culture", "digital native", "articulate", "exotic", "articulate", 'aggressive', 'fearless', 'superior', 'driven', 'determined', 'decider', 'considerate', 'nurture', 'empathetic', 'responsive', 'trustworthy', 'inclusive'
         }
         found_words = []
         for word in biased_words:
             if word in text:
                 found_words.append(word)
-        return found_words
+
+        # If words is needed on return
+        if num == 1:
+            return found_words
+
+        # Binary Classification
+        if num == 2:
+            words_present = len(found_words)
+            if words_present >= 10:  
+                return True
+            return False
