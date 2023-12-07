@@ -86,9 +86,12 @@ front_end_model, vectorizer_fe, X_test_fe, y_test_fe = training_model(
     sampled_data['combined_text'], sampled_data['is_front_end_dev'], "Front End Dev")
 
 # back_end_model, X_test_be, y_test_be = training_model(sampled_data['combined_text'], sampled_data['is_back_end_dev'], "Back End Dev")
-
 # ai_ml_model, X_test_ai, y_test_ai = training_model(sampled_data['combined_text'], sampled_data['is_ai_ml'], "AI ML")
 
+# Biased Language Detection
+sampled_data['biased_words'] = sampled_data['jobdescription'].apply(
+    lambda x: JobCategoryClassifier.find_biased_language(x, JobCategoryClassifier.biased_words))
 
-import eli5
-from sklearn.linear_model import LogisticRegression
+# Display job descriptions with biased words
+biased_job_descriptions = sampled_data[sampled_data['biased_words'].apply(lambda x: len(x) > 0)]
+print(biased_job_descriptions[['jobtitle', 'jobdescription', 'biased_words']])
