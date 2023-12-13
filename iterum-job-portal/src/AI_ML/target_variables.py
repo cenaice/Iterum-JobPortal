@@ -77,7 +77,7 @@ class JobCategoryClassifier:
             "trust", "understand", "warm", "yield", "young", "youthful",
             "new graduate", "old", "elderly", "seasoned", "experienced",
             "overqualified", "energetic", "dynamic", "able-bodied", "walk-in",
-            "agile", "strong", "robust", "stamina", "rockstar", "ninja",
+            "agile", "strong", "robust", "stamina", "rockstar",
             "superhero", "guru", "wizard", "chairman", "foreman", "maid",
             "housewife", "waitress", "native", "urban", "suburban", "tribe", 'fit',
             "culture", "digital native", "articulate", "exotic", "articulate", 'aggressive', 'fearless', 'superior', 'driven', 'determined', 'decider', 'considerate', 'nurture', 'empathetic', 'responsive', 'trustworthy', 'inclusive'

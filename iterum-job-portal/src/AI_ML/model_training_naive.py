@@ -9,7 +9,6 @@ from sklearn.metrics import accuracy_score
 from target_variables import *
 from text_preprocess import preprocess_text
 import pandas as pd
-import shap
 from lime.lime_text import LimeTextExplainer
 
 
@@ -56,6 +55,7 @@ def calculate_bias_score(description, biased_words_set):
 
 # Function to calculate a bias score for each description
 
+
 def apply_lime_to_model(dataframe, X_test, y_test, model, class_names, biased_words):
     # Creating LimeTextExplainer
     print(" --- Applying LIME to Model ---")
@@ -79,7 +79,8 @@ def apply_lime_to_model(dataframe, X_test, y_test, model, class_names, biased_wo
     # print('Job Description:', dataframe.iloc[idx]['jobdescription'])
 
     # Print the first 15 words of the job description
-    print('Job Description (first 15 words):', ' '.join(dataframe.iloc[idx]['jobdescription'].split()[:30]))
+    print('Job Description (first 15 words):', ' '.join(
+        dataframe.iloc[idx]['jobdescription'].split()[:30]))
     print('Probability(Bias) =',
           model.predict_proba([X_test.iloc[idx]])[0, 1])
     print('True class: %s' % class_names[y_test.iloc[idx]])
@@ -97,7 +98,7 @@ dice_data = dice_data.astype(str)
 linkedin_data = linkedin_data.astype(str)
 biased_words_set = JobCategoryClassifier.biased_words
 
-# Sample a subset of the data 
+# Sample a subset of the data
 dice_sampled_data = dice_data.sample(frac=.1, random_state=1)
 linkedin_sampled_data = linkedin_data.sample(frac=0.4, random_state=1)
 
@@ -106,9 +107,10 @@ dice_sampled_data.drop_duplicates(inplace=True)
 linkedin_sampled_data.drop_duplicates(inplace=True)
 
 
-combined_data = pd.concat([dice_sampled_data, linkedin_sampled_data], ignore_index=True)
-#combined_data = linkedin_sampled_data
-#combined_data = dice_sampled_data
+combined_data = pd.concat(
+    [dice_sampled_data, linkedin_sampled_data], ignore_index=True)
+# combined_data = linkedin_sampled_data
+# combined_data = dice_sampled_data
 
 # Convert entire DataFrame to string before filling missing values
 combined_data = combined_data.astype(str)
@@ -123,7 +125,8 @@ linkedin_sampled_data = combined_data[[
 # Apply preprocessing to text columns
 for column in ['jobtitle', 'jobdescription', 'skills']:
     combined_data[column] = combined_data[column].apply(preprocess_text)
-    linkedin_sampled_data[column] = linkedin_sampled_data[column].apply(preprocess_text)
+    linkedin_sampled_data[column] = linkedin_sampled_data[column].apply(
+        preprocess_text)
 
 
 # Concatenate text features into a single feature for analysis
@@ -139,7 +142,6 @@ linkedin_sampled_data['combined_text'] = linkedin_sampled_data['jobtitle'] + ' '
 # Apply the function to create the target variable
 # combined_data['find_biased_language'] = combined_data.apply(
 #     lambda x: JobCategoryClassifier.find_biased_language(x['jobdescription']), axis=1)
-
 
 
 # Biased Language Detection
@@ -178,7 +180,7 @@ plt.xlabel("Biased Words")
 plt.show()
 
 # Calculate bias score for each job description
-print("Printing Bias Score for each job description")
+print("Printing Bias Score for each job description . . .")
 combined_data['bias_score'] = combined_data['jobdescription'].apply(
     lambda x: calculate_bias_score(x, biased_words_set))
 
@@ -186,6 +188,29 @@ combined_data['bias_score'] = combined_data['jobdescription'].apply(
 print(combined_data[['jobtitle', 'biased_words', 'bias_score']])
 
 # Plotting the distribution of bias scores
+# Calculate and print the average (mean) of the bias score
+average_bias_score = combined_data['bias_score'].mean()
+print("Average Bias Score:", average_bias_score)
+
+# Calculate and print the standard deviation of the bias score
+std_dev_bias_score = combined_data['bias_score'].std()
+print("Standard Deviation of Bias Score:", std_dev_bias_score)
+
+# Calculate IQR for bias score
+Q1 = combined_data['bias_score'].quantile(0.25)
+Q3 = combined_data['bias_score'].quantile(0.75)
+IQR = Q3 - Q1
+
+# Define bounds for outliers
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Filter out the outliers
+outliers = combined_data[(combined_data['bias_score'] < lower_bound) | (
+    combined_data['bias_score'] > upper_bound)]
+
+print("Outliers start below:", lower_bound, "and above:", upper_bound)
+
 plt.hist(combined_data['bias_score'], bins=range(
     min(combined_data['bias_score']), max(combined_data['bias_score']) + 1, 1))
 plt.title('Distribution of Bias Scores in Job Descriptions')
