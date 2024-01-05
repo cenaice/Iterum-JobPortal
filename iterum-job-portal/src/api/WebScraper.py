@@ -29,7 +29,7 @@ try:
 
     for row in rows:
         cells = row.find_all('td')
-
+ 
         
         
         # Check if the number of cells is what you expect, for example, 5 cells in a row
@@ -44,7 +44,8 @@ try:
                 'location': cells[1].get_text(strip=True),
                 'role': role_text,
                 'apply_link': cells[2].find('a')['href'] if cells[2].find('a') else None,
-                'date_posted': cells[4].get_text(strip=True)
+                'date_posted': cells[4].get_text(strip=True),
+                'job_description': 'PLACEHOLDER'
             }
             jobs.append(job_data)
 
